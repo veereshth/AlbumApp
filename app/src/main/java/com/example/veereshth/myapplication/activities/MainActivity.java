@@ -17,6 +17,8 @@ import com.example.veereshth.myapplication.presenters.AlbumPresenter;
 import com.example.veereshth.myapplication.screens.MainScreen;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,7 +48,16 @@ public class MainActivity extends AppCompatActivity implements MainScreen {
 
     @Override
     public void onAlubmResponse(List<AlbumResponse> response) {
-        adapter.refreshData(response);
+        list = response;
+        if (list.size() > 0) {
+            Collections.sort(list, new Comparator<AlbumResponse>() {
+                @Override
+                public int compare(final AlbumResponse object1, final AlbumResponse object2) {
+                    return object1.getTitle().compareTo(object2.getTitle());
+                }
+            });
+        }
+        adapter.refreshData(list);
     }
     private void setVerticalRecyclerView(RecyclerView view, Context context) {
         view.setHasFixedSize(true);
